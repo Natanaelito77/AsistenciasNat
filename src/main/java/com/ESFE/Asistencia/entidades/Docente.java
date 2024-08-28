@@ -2,6 +2,10 @@ package com.ESFE.Asistencia.entidades;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.aspectj.bridge.IMessage;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "docentes")
@@ -12,14 +16,30 @@ public class Docente {
 
     @NotBlank(message = "Ingrese el nombre del docente")
     private String nombre;
-    @Nullable
+    @NotBlank(message = "El apellido es requerido")
     private String apellido;
-    @Nullable
+    @NotBlank(message = "El email es requerido")
     private String email;
-    @Nullable
+    @NotBlank(message= "El telefono es requerido")
     private Integer telefono;
-    @Nullable
+    @NotBlank(message = "La escuela es requerida")
     private String escuela;
+
+    @ManyToMany
+    @JoinTable(
+            name = "docentes_grupos",
+            joinColumns = @JoinColumn(name = "docente_id"),
+            inverseJoinColumns = @JoinColumn(name= "grupo_id")
+    )
+private Set<Grupo> grupos = new HashSet<>();
+
+    public Set<Grupo> getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(Set<Grupo> grupos) {
+        this.grupos = grupos;
+    }
 
     public Integer getId() {
         return id;
